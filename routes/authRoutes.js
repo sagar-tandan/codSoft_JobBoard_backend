@@ -7,7 +7,7 @@ const { test,registerUser } = require ('../controllers/authController')
 router.use(
     cors({
         credentials: true,
-        origin: 'https://localhost:5173'
+        origin: 'http://localhost:5173' // Fix: Match the correct protocol and port
     })
 )
 

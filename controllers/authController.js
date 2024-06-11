@@ -15,19 +15,20 @@ const registerUser = async (req, res) => {
       });
     }
 
-    //Check if password is good
-    if (!password || password.length < 6) {
-      return res.json({
-        error: "Password is required and should be 6 characters long",
-      });
-    }
-
+   
     //Check mail
     const exist = await User.findOne({email})
     if(exist) {
         return res.json({
             error: "Email is already taken"
         })
+    }
+
+     //Check if password is good
+     if (!password || password.length < 6) {
+      return res.json({
+        error: "Password is required and should be 6 characters long",
+      });
     }
 
     const user = await User.create({
