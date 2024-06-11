@@ -70,6 +70,12 @@ const loginUser = async (req, res) => {
           expiresIn: "1hr",
         }
       );
+      res.cookie(String(user._id),token),{
+        Path: '/',
+        expiresIn: new Date(Date.now()+ 1000*30),
+        httpOnly:true,
+        sameSite: 'lax'
+      }
       return res.json({ message: "Login Successful", user: user, token });
     }
 
@@ -84,9 +90,11 @@ const loginUser = async (req, res) => {
 };
 
 const verifyUser = (req, res, next) => {
-  const headers = req.headers[`authorization`];
-  // console.log(headers)
-  const token = headers.split(" ")[1];
+ 
+  
+
+  const cookies = req.headers.cookie;
+  const token = cookies.split("=")[1];
   if (!token) {
     res.json({ error: "No token found" });
   }
@@ -94,10 +102,12 @@ const verifyUser = (req, res, next) => {
     if (err) {
       return res.json({ error: "Invalid Token" });
     }
-    console.log(user.id);
+    // console.log(user.id);
     req.id = user.id;
   });
   next();
+
+
 };
 
 const getUser = async (req, res, next) => {
