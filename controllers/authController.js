@@ -47,7 +47,7 @@ const registerUser = async (req, res) => {
 };
 
 //login Endpoint
-const loginUser = async (req, res) => {
+const loginUser = async (req, res,next) => {
   try {
     const { email, password } = req.body;
 
@@ -67,15 +67,14 @@ const loginUser = async (req, res) => {
         { email: user.email, id: user._id, name: user.name },
         process.env.JWT_SECRET,
         {
-          expiresIn: "1hr",
+          expiresIn: "3d",
         }
       );
-      res.cookie(String(user._id),token),{
-        Path: '/',
-        expiresIn: new Date(Date.now()+ 1000*30),
-        httpOnly:true,
-        sameSite: 'lax'
-      }
+      res.cookie("token", token),
+        {
+          withCredentials: true,
+          httpOnly: false,
+        };
       return res.json({ message: "Login Successful", user: user, token });
     }
 
@@ -84,50 +83,83 @@ const loginUser = async (req, res) => {
         error: "Password doesn't match",
       });
     }
+    next();
   } catch (error) {
     console.log(error);
   }
 };
 
-const verifyUser = (req, res, next) => {
- 
-  
+const verifyUser = (req, res) => {
+  // const token = req.cookies.token;
+  // if (!token) {
+  //   res.json({ error: "No token found" });
+  // }
 
-  const cookies = req.headers.cookie;
-  const token = cookies.split("=")[1];
+  // jwt.verify(String(token), process.env.JWT_SECRET, async (err, data) => {
+  //   if (err) {
+  //     return res.json({ error: "Invalid Token" });
+  //   }
+  //   const user = await User.findById(data.id);
+  //   if (user){
+  //     return res.json({ user })
+  //   }else{
+  //     return res.json({error: "User not found!"})
+  //   }
+
+  // });
+  // console.log("Cookies:", req.cookies.token);
+  // const cookie = req.cookies;
+
+  const token = req.cookies.token;
+
   if (!token) {
-    res.json({ error: "No token found" });
+    return res.json({ error: "token not found" });
   }
-  jwt.verify(String(token), process.env.JWT_SECRET, (err, user) => {
+  jwt.verify(String(token), process.env.JWT_SECRET, async (err, data) => {
     if (err) {
       return res.json({ error: "Invalid Token" });
+    } else {
+      // console.log(data.id)
+      const user = await User.findById(data.id);
+      if (user) return res.json({ status: true, user: user.name });
+      else return res.json({ error: "User not found!" });
     }
-    // console.log(user.id);
-    req.id = user.id;
   });
-  next();
 
-
+  // if (cookies) {
+  //   const token = cookies.split("=")[1];
+  //   if (!token) {
+  //     res.json({ error: "No token found" });
+  //   }
+  //   jwt.verify(String(token), process.env.JWT_SECRET, (err, user) => {
+  //     if (err) {
+  //       return res.json({ error: "Invalid Token" });
+  //     }
+  //     // console.log(user.id);
+  //     req.id = user.id;
+  //   });
+  //   next();
+  // }
 };
 
-const getUser = async (req, res, next) => {
-  const userId = req.id;
-  let user;
-  try {
-    user = await User.findById(userId, "-password");
-  } catch (error) {
-    return new Error(err);
-  }
-  if(!user){
-    return res.json({message: "user not found!!"})
-  }
-  return res.json({user})
-};
+// const getUser = async (req, res, next) => {
+//   const userId = req.id;
+//   let user;
+//   try {
+//     user = await User.findById(userId, "-password");
+//   } catch (error) {
+//     return new Error(err);
+//   }
+//   if (!user) {
+//     return res.json({ message: "user not found!!" });
+//   }
+//   return res.json({ user });
+// };
 
 module.exports = {
   test,
   registerUser,
   loginUser,
   verifyUser,
-  getUser
+  // getUser,
 };

@@ -11,9 +11,9 @@ router.use(
     })
 )
 
-router.get('/', test);
+// router.get('/', test);
 router.post('/register', registerUser)
-router.post('/login', loginUser)
-router.get('/user', verifyUser,getUser)
+router.post('/login', loginUser,verifyUser)
+router.post('/', verifyUser)
 
 module.exports = router;
