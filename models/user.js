@@ -1,16 +1,24 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+const companySchema = new Schema({
   name: String,
   email: {
     type: String,
-
     unique: true,
   },
-  password: String
+  password: String,
+  image: String,
+  selectedCity: String,
+  selectedCountry: String,
+  phone: Number,
 });
 
-const UserModel = mongoose.model('User',userSchema)
+// Define User schema
+const userSchema = new Schema({
+  company: companySchema, // Embed Company schema
+});
+
+const UserModel = mongoose.model("User", userSchema);
 
 module.exports = UserModel;
