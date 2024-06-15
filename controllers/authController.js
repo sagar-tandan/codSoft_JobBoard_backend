@@ -1,5 +1,6 @@
-const User = require("../models/user");
+// const User = require("../models/user");
 const Candidate = require("../models/candidate");
+const Company = require("../models/company");
 const jwt = require("jsonwebtoken");
 // import {hashPassword, comparePassword} from '../helpers/auth'
 const { hashPassword, comparePassword } = require("../helpers/auth");
@@ -19,31 +20,27 @@ const registerUser = async (req, res) => {
       selectedCountry,
       phone,
     } = req.body;
-    // Check if name was entered
-    // if (!name) {
-    //   return res.json({
-    //     error: "name is required",
-    //   });
-    // }
+
 
     //Check mail
-    const exist = await User.findOne({ "company.email": email });
+    const exist = await Company.findOne({ "company.email": email });
     if (exist) {
       return res.json({
         error: "Email is already taken",
       });
     }
 
-    //Check if password is good
-    // if (!password || password.length < 6) {
-    //   return res.json({
-    //     error: "Password is required and should be 6 characters long",
-    //   });
-    // }
+    //Check name
+    const exists = await Company.findOne({ "company.name": name });
+    if (exists) {
+      return res.json({
+        error: "This Company name already exists!",
+      });
+    }
 
     const hashedPassword = await hashPassword(password);
 
-    const user = await User.create({
+    const user = await Company.create({
       company: {
         name,
         email,
