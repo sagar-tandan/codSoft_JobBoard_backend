@@ -108,54 +108,89 @@ const loginUser = async (req, res, next) => {
 
     //Check mail
     const company = await Company.findOne({ "company.email": email });
-    if (!company) {
-      const candidate = await Candidate.findOne({
-        "candidate.Useremail": email,
+    const candidate = await Candidate.findOne({
+      "candidate.Useremail": email,
+    });
+
+    if (!company && !candidate) {
+      return res.json({
+        error: "No user found!!",
       });
-      if (!candidate) {
+    } else if (!company && candidate) {
+      console.log(candidate);
+      console.log(candidate.candidate.Userpassword);
+      // check if password match
+      const match = await comparePassword(
+        password,
+        candidate.candidate.Userpassword
+      );
+      if (match) {
+        const token = jwt.sign(
+          {
+            email: candidate.candidate.Useremail,
+            id: candidate.candidate._id,
+            name: candidate.candidate.Username,
+          },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "3d",
+          }
+        );
+        res.cookie("token", token),
+          {
+            withCredentials: true,
+            httpOnly: false,
+          };
+        console.log(candidate.candidate);
+
         return res.json({
-          error: "No user found!!",
+          message: "Login Successful",
+          user: candidate.candidate,
+          token,
         });
-      } else {
-        console.log(candidate);
       }
-    }else{
-      console.log(company)
+      if (!match) {
+        return res.json({
+          error: "Password doesn't match",
+        });
+      }
+      next();
+    } else {
+      console.log(company);
+      // check if password match
+      const match = await comparePassword(password, company.company.password);
+      if (match) {
+        const token = jwt.sign(
+          {
+            email: company.company.email,
+            id: company.company._id,
+            name: company.company.name,
+          },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "3d",
+          }
+        );
+        res.cookie("token", token),
+          {
+            withCredentials: true,
+            httpOnly: false,
+          };
+        console.log(company.company);
+
+        return res.json({
+          message: "Login Successful",
+          user: company.company,
+          token,
+        });
+      }
+      if (!match) {
+        return res.json({
+          error: "Password doesn't match",
+        });
+      }
+      next();
     }
-    // const user = await Candidate.findOne({ "candidate.email": email });
-    // if (!user) {
-    //   return res.json({
-    //     error: "No user found!!",
-    //   });
-    // }
-
-    // console.log(user);
-
-    // //check if password match
-    // const match = await comparePassword(password, user.password);
-
-    // if (match) {
-    //   const token = jwt.sign(
-    //     { email: user.email, id: user._id, name: user.name },
-    //     process.env.JWT_SECRET,
-    //     {
-    //       expiresIn: "3d",
-    //     }
-    //   );
-    //   res.cookie("token", token),
-    //     {
-    //       withCredentials: true,
-    //       httpOnly: false,
-    //     };
-    //   return res.json({ message: "Login Successful", user: user, token });
-    // }
-
-    // if (!match) {
-    //   return res.json({
-    //     error: "Password doesn't match",
-    //   });
-    // }
-    // next();
   } catch (error) {
     console.log(error);
   }
@@ -166,7 +201,6 @@ const verifyUser = (req, res) => {
   // if (!token) {
   //   res.json({ error: "No token found" });
   // }
-
   // jwt.verify(String(token), process.env.JWT_SECRET, async (err, data) => {
   //   if (err) {
   //     return res.json({ error: "Invalid Token" });
@@ -177,13 +211,11 @@ const verifyUser = (req, res) => {
   //   }else{
   //     return res.json({error: "User not found!"})
   //   }
-
   // });
   // console.log("Cookies:", req.cookies.token);
+
   // const cookie = req.cookies;
-
   const token = req.cookies.token;
-
   if (!token) {
     return res.json({ error: "token not found" });
   }
@@ -191,10 +223,18 @@ const verifyUser = (req, res) => {
     if (err) {
       return res.json({ error: "Invalid Token" });
     } else {
-      // console.log(data.id)
-      const user = await User.findById(data.id);
-      if (user) return res.json({ status: true, user: user.name });
-      else return res.json({ error: "User not found!" });
+      console.log(data.id);
+
+      //for Company
+      const company1 = await Company.findOne({ "company._id": data.id });
+      const candidate1 = await Candidate.findOne({ "candidate._id": data.id });
+      if (!company1 && !candidate1) {
+        return res.json({ error: "User not found!" });
+      } else if (!company1 && candidate1) {
+        return res.json({ status: true, user: candidate1 });
+      } else {
+        return res.json({ status: true, user: company1 });
+      }
     }
   });
 
