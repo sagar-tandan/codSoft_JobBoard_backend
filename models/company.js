@@ -12,6 +12,8 @@ const companySchema = new Schema({
   selectedCity: String,
   selectedCountry: String,
   phone: Number,
+  type: String,
+
 });
 
 // Define User schema

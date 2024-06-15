@@ -21,7 +21,6 @@ const registerUser = async (req, res) => {
       phone,
     } = req.body;
 
-
     //Check mail
     const exist = await Company.findOne({ "company.email": email });
     if (exist) {
@@ -49,6 +48,7 @@ const registerUser = async (req, res) => {
         selectedCity,
         selectedCountry,
         phone,
+        type: "company",
       },
     });
 
@@ -91,6 +91,7 @@ const registerUser1 = async (req, res) => {
         UserselectedCity,
         UserselectedCountry,
         Userphone,
+        type: "candidate",
       },
     });
 
@@ -106,38 +107,55 @@ const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     //Check mail
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.json({
-        error: "No user found!!",
+    const company = await Company.findOne({ "company.email": email });
+    if (!company) {
+      const candidate = await Candidate.findOne({
+        "candidate.Useremail": email,
       });
+      if (!candidate) {
+        return res.json({
+          error: "No user found!!",
+        });
+      } else {
+        console.log(candidate);
+      }
+    }else{
+      console.log(company)
     }
+    // const user = await Candidate.findOne({ "candidate.email": email });
+    // if (!user) {
+    //   return res.json({
+    //     error: "No user found!!",
+    //   });
+    // }
 
-    //check if password match
-    const match = await comparePassword(password, user.password);
+    // console.log(user);
 
-    if (match) {
-      const token = jwt.sign(
-        { email: user.email, id: user._id, name: user.name },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: "3d",
-        }
-      );
-      res.cookie("token", token),
-        {
-          withCredentials: true,
-          httpOnly: false,
-        };
-      return res.json({ message: "Login Successful", user: user, token });
-    }
+    // //check if password match
+    // const match = await comparePassword(password, user.password);
 
-    if (!match) {
-      return res.json({
-        error: "Password doesn't match",
-      });
-    }
-    next();
+    // if (match) {
+    //   const token = jwt.sign(
+    //     { email: user.email, id: user._id, name: user.name },
+    //     process.env.JWT_SECRET,
+    //     {
+    //       expiresIn: "3d",
+    //     }
+    //   );
+    //   res.cookie("token", token),
+    //     {
+    //       withCredentials: true,
+    //       httpOnly: false,
+    //     };
+    //   return res.json({ message: "Login Successful", user: user, token });
+    // }
+
+    // if (!match) {
+    //   return res.json({
+    //     error: "Password doesn't match",
+    //   });
+    // }
+    // next();
   } catch (error) {
     console.log(error);
   }

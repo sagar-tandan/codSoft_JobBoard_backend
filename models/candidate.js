@@ -12,6 +12,7 @@ const candidateSchema = new Schema({
   UserselectedCity: String,
   UserselectedCountry: String,
   Userphone: Number,
+  type: String,
 });
 
 // Define User schema
