@@ -231,9 +231,9 @@ const verifyUser = (req, res) => {
       if (!company1 && !candidate1) {
         return res.json({ error: "User not found!" });
       } else if (!company1 && candidate1) {
-        return res.json({ status: true, user: candidate1 });
+        return res.json({ status: true, user: candidate1.candidate });
       } else {
-        return res.json({ status: true, user: company1 });
+        return res.json({ status: true, user: company1.company });
       }
     }
   });
