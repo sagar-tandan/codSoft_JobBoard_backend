@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Candidate = require("../models/candidate");
 const jwt = require("jsonwebtoken");
 // import {hashPassword, comparePassword} from '../helpers/auth'
 const { hashPassword, comparePassword } = require("../helpers/auth");
@@ -26,7 +27,7 @@ const registerUser = async (req, res) => {
     // }
 
     //Check mail
-    const exist = await User.findOne({ "company.email":email });
+    const exist = await User.findOne({ "company.email": email });
     if (exist) {
       return res.json({
         error: "Email is already taken",
@@ -55,6 +56,48 @@ const registerUser = async (req, res) => {
     });
 
     return res.json(user);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//registration of Candidate
+const registerUser1 = async (req, res) => {
+  try {
+    const {
+      Username,
+      Useremail,
+      Userpassword,
+      Userimage,
+      UserselectedCity,
+      UserselectedCountry,
+      Userphone,
+    } = req.body;
+
+    //Check mail
+    const exist = await Candidate.findOne({ "candidate.email": Useremail });
+    if (exist) {
+      return res.json({
+        error: "Email is already taken",
+      });
+    }
+
+    const hashedPassword = await hashPassword(Userpassword);
+
+    // Create a new user with candidate details
+    const candidate = await Candidate.create({
+      candidate: {
+        Username,
+        Useremail,
+        Userpassword: hashedPassword,
+        Userimage,
+        UserselectedCity,
+        UserselectedCountry,
+        Userphone,
+      },
+    });
+
+    return res.json(candidate);
   } catch (error) {
     console.log(error);
   }
@@ -173,6 +216,7 @@ const verifyUser = (req, res) => {
 module.exports = {
   test,
   registerUser,
+  registerUser1,
   loginUser,
   verifyUser,
   // getUser,
