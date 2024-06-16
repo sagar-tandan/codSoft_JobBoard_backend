@@ -197,24 +197,6 @@ const loginUser = async (req, res, next) => {
 };
 
 const verifyUser = (req, res) => {
-  // const token = req.cookies.token;
-  // if (!token) {
-  //   res.json({ error: "No token found" });
-  // }
-  // jwt.verify(String(token), process.env.JWT_SECRET, async (err, data) => {
-  //   if (err) {
-  //     return res.json({ error: "Invalid Token" });
-  //   }
-  //   const user = await User.findById(data.id);
-  //   if (user){
-  //     return res.json({ user })
-  //   }else{
-  //     return res.json({error: "User not found!"})
-  //   }
-  // });
-  // console.log("Cookies:", req.cookies.token);
-
-  // const cookie = req.cookies;
   const token = req.cookies.token;
   if (!token) {
     return res.json({ error: "token not found" });
@@ -237,36 +219,7 @@ const verifyUser = (req, res) => {
       }
     }
   });
-
-  // if (cookies) {
-  //   const token = cookies.split("=")[1];
-  //   if (!token) {
-  //     res.json({ error: "No token found" });
-  //   }
-  //   jwt.verify(String(token), process.env.JWT_SECRET, (err, user) => {
-  //     if (err) {
-  //       return res.json({ error: "Invalid Token" });
-  //     }
-  //     // console.log(user.id);
-  //     req.id = user.id;
-  //   });
-  //   next();
-  // }
 };
-
-// const getUser = async (req, res, next) => {
-//   const userId = req.id;
-//   let user;
-//   try {
-//     user = await User.findById(userId, "-password");
-//   } catch (error) {
-//     return new Error(err);
-//   }
-//   if (!user) {
-//     return res.json({ message: "user not found!!" });
-//   }
-//   return res.json({ user });
-// };
 
 module.exports = {
   test,
