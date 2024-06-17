@@ -243,7 +243,6 @@ const uploadJob = async (req, res) => {
     level,
   } = req.body;
   const findDesiredCompany = await Company.findOne({ "company._id": id });
-  // return res.json({ findDesiredCompany });
   const newJob = {
     CompanyName: cName,
     CompanyLocation: cLoc,
