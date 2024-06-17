@@ -1,6 +1,7 @@
 // const User = require("../models/user");
 const Candidate = require("../models/candidate");
 const Company = require("../models/company");
+const JObModel = require("../models/jobModel");
 const jwt = require("jsonwebtoken");
 // import {hashPassword, comparePassword} from '../helpers/auth'
 const { hashPassword, comparePassword } = require("../helpers/auth");
@@ -221,11 +222,58 @@ const verifyUser = (req, res) => {
   });
 };
 
+const uploadJob = async (req, res) => {
+  const {
+    id,
+    cName,
+    cLoc,
+    cPhone,
+    position,
+    des,
+    resp,
+    requ,
+    benefits,
+    jobtype,
+    category,
+    skills,
+    salary,
+    experience,
+    gender,
+    qual,
+    level,
+  } = req.body;
+  const findDesiredCompany = await Company.findOne({ "company._id": id });
+  // return res.json({ findDesiredCompany });
+  const newJob = {
+    CompanyName: cName,
+    CompanyLocation: cLoc,
+    CompanyPhone: cPhone,
+    Position: position,
+    Desc: des,
+    Responsibility: resp,
+    Requirement: requ,
+    Benefits: benefits,
+    Type: jobtype,
+    Category: category,
+    Skills: skills,
+    Salary: salary,
+    Experience: experience,
+    Gender: gender,
+    Qualification: qual,
+    Level: level,
+  };
+  findDesiredCompany.job.push(newJob);
+  const final = await findDesiredCompany.save();
+  const jobvacancy = await JObModel.create(newJob);
+
+  return res.json({ final, jobvacancy });
+};
+
 module.exports = {
   test,
   registerUser,
   registerUser1,
   loginUser,
   verifyUser,
-  // getUser,
+  uploadJob,
 };

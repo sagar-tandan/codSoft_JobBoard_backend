@@ -13,12 +13,31 @@ const companySchema = new Schema({
   selectedCountry: String,
   phone: Number,
   type: String,
+});
 
+const job = new Schema({
+  CompanyName: String,
+  CompanyLocation: String,
+  CompanyPhone: Number,
+  Position: String,
+  Desc: String,
+  Responsibility: String,
+  Requirement: String,
+  Benefits: String,
+  Type: String,
+  Category: String,
+  Skills: String,
+  Salary: Number,
+  Experience: Number,
+  Gender: String,
+  Qualification: String,
+  Level: String,
 });
 
 // Define User schema
 const userCompanySchema = new Schema({
   company: companySchema,
+  job: [job],
 });
 
 const UserCompanyModel = mongoose.model("Company", userCompanySchema);
