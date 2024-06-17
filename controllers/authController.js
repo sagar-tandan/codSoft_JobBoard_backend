@@ -276,6 +276,9 @@ const getCompanyJobs = async (req, res) => {
       res.json({ error: "No Company Found!!" });
     }
     const findAllJobs = findCompanyById.job;
+    if (!findAllJobs) {
+      res.json({ error: "No Jobs Found!!" });
+    }
     return res.json({ findAllJobs });
   } catch (error) {
     console.log(error);
