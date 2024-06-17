@@ -270,7 +270,7 @@ const uploadJob = async (req, res) => {
 
 const getCompanyJobs = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.query;
     const findCompanyById = await Company.findOne({ "company._id": id });
     if (!findCompanyById) {
       res.json({ error: "No Company Found!!" });
@@ -278,7 +278,7 @@ const getCompanyJobs = async (req, res) => {
     const findAllJobs = findCompanyById.job;
     return res.json({ findAllJobs });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
