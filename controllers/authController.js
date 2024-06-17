@@ -268,6 +268,20 @@ const uploadJob = async (req, res) => {
   return res.json({ final, jobvacancy });
 };
 
+const getCompanyJobs = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const findCompanyById = await Company.findOne({ "company._id": id });
+    if (!findCompanyById) {
+      res.json({ error: "No Company Found!!" });
+    }
+    const findAllJobs = findCompanyById.job;
+    return res.json({ findAllJobs });
+  } catch (error) {
+    console.log(error)
+  }
+};
+
 module.exports = {
   test,
   registerUser,
@@ -275,4 +289,5 @@ module.exports = {
   loginUser,
   verifyUser,
   uploadJob,
+  getCompanyJobs,
 };
