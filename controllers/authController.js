@@ -230,8 +230,8 @@ const uploadJob = async (req, res) => {
     cPhone,
     position,
     des,
-    resp,
-    requ,
+    responsibilities,
+    requirements,
     benefits,
     jobtype,
     category,
@@ -249,8 +249,8 @@ const uploadJob = async (req, res) => {
     CompanyPhone: cPhone,
     Position: position,
     Desc: des,
-    Responsibility: resp,
-    Requirement: requ,
+    Responsibility: responsibilities,
+    Requirement: requirements,
     Benefits: benefits,
     Type: jobtype,
     Category: category,
@@ -265,7 +265,8 @@ const uploadJob = async (req, res) => {
   const final = await findDesiredCompany.save();
   const jobvacancy = await JObModel.create(newJob);
 
-  return res.json({ final, jobvacancy });
+  return res.json({ message: "Job Posted Successfully!" });
+  // console.log("done")
 };
 
 const getCompanyJobs = async (req, res) => {
