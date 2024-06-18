@@ -223,50 +223,59 @@ const verifyUser = (req, res) => {
 };
 
 const uploadJob = async (req, res) => {
-  const {
-    id,
-    cName,
-    cLoc,
-    cPhone,
-    position,
-    des,
-    responsibilities,
-    requirements,
-    benefits,
-    jobtype,
-    category,
-    skills,
-    salary,
-    experience,
-    gender,
-    qual,
-    level,
-  } = req.body;
-  const findDesiredCompany = await Company.findOne({ "company._id": id });
-  const newJob = {
-    CompanyName: cName,
-    CompanyLocation: cLoc,
-    CompanyPhone: cPhone,
-    Position: position,
-    Desc: des,
-    Responsibility: responsibilities,
-    Requirement: requirements,
-    Benefits: benefits,
-    Type: jobtype,
-    Category: category,
-    Skills: skills,
-    Salary: salary,
-    Experience: experience,
-    Gender: gender,
-    Qualification: qual,
-    Level: level,
-  };
-  findDesiredCompany.job.push(newJob);
-  const final = await findDesiredCompany.save();
-  const jobvacancy = await JObModel.create(newJob);
+  try {
+    const {
+      id,
+      cName,
+      cLoc,
+      cPhone,
+      position,
+      des,
+      responsibilities,
+      requirements,
+      benefits,
+      jobtype,
+      category,
+      skills,
+      salary,
+      experience,
+      gender,
+      qual,
+      level,
+    } = req.body;
+    const findDesiredCompany = await Company.findOne({ "company._id": id });
+    const newJob = {
+      CompanyName: cName,
+      CompanyLocation: cLoc,
+      CompanyPhone: cPhone,
+      Position: position,
+      Desc: des,
+      Responsibility: responsibilities,
+      Requirement: requirements,
+      Benefits: benefits,
+      Type: jobtype,
+      Category: category,
+      Skills: skills,
+      Salary: salary,
+      Experience: experience,
+      Gender: gender,
+      Qualification: qual,
+      Level: level,
+    };
+    
+    if (!findDesiredCompany) {
+      return res.status(404).json({ error: "Company not found" });
+    }
 
-  return res.json({ message: "Job Posted Successfully!" });
-  // console.log("done")
+    findDesiredCompany.job.push(newJob);
+    const final = await findDesiredCompany.save();
+    const jobvacancy = await JObModel.create(newJob);
+
+    return res.json({ message: "Job Posted Successfully!" });
+    // console.log("done")
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getCompanyJobs = async (req, res) => {
