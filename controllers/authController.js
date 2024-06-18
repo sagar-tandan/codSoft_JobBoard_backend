@@ -262,7 +262,7 @@ const uploadJob = async (req, res) => {
       Qualification: qual,
       Level: level,
     };
-    
+
     if (!findDesiredCompany) {
       return res.status(404).json({ error: "Company not found" });
     }
@@ -316,6 +316,18 @@ const deleteJob = async (req, res) => {
     console.log(error);
   }
 };
+
+const getAllJobs = async (req, res) => {
+  try {
+    const findJobs = await JObModel.find();
+    if (!findJobs) {
+      res.json({ error: "No jobs Found!!" });
+    }
+    return res.json({ findJobs });
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = {
   test,
   registerUser,
@@ -325,4 +337,5 @@ module.exports = {
   uploadJob,
   getCompanyJobs,
   deleteJob,
+  getAllJobs,
 };
