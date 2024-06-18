@@ -5,6 +5,8 @@ const jobSchema = new Schema({
   CompanyName: String,
   CompanyLocation: String,
   CompanyPhone: Number,
+  companyImage: String,
+  copanyEmail: String,
   Position: String,
   Desc: String,
   Responsibility: Array,
