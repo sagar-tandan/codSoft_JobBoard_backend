@@ -244,6 +244,8 @@ const uploadJob = async (req, res) => {
       gender,
       qual,
       level,
+      published,
+      end,
     } = req.body;
     const findDesiredCompany = await Company.findOne({ "company._id": id });
     const newJob = {
@@ -265,6 +267,8 @@ const uploadJob = async (req, res) => {
       Gender: gender,
       Qualification: qual,
       Level: level,
+      PublishedDate: published,
+      ExpiryDate: end,
     };
 
     if (!findDesiredCompany) {

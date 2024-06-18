@@ -20,6 +20,8 @@ const jobSchema = new Schema({
   Gender: String,
   Qualification: String,
   Level: String,
+  PublishedDate : String,
+  ExpiryDate: String,
 });
 
 const JObModel = mongoose.model("JobVacancy", jobSchema);
