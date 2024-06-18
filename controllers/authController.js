@@ -286,6 +286,27 @@ const getCompanyJobs = async (req, res) => {
   }
 };
 
+const deleteJob = async (req, res) => {
+  try {
+    const { cid, jid } = req.body;
+
+    const jobToDelete = await Company.findOneAndUpdate(
+      { "company._id": cid, "job._id": jid },
+      { $pull: { job: { _id: jid } } },
+      { new: true }
+    );
+
+    if (!jobToDelete) {
+      return res
+        .status(404)
+        .json({ error: "Job not found in the specified company." });
+    }
+
+    res.status(200).json({ message: "Job deleted successfully.", jobToDelete });
+  } catch (error) {
+    console.log(error);
+  }
+};
 module.exports = {
   test,
   registerUser,
@@ -294,4 +315,5 @@ module.exports = {
   verifyUser,
   uploadJob,
   getCompanyJobs,
+  deleteJob,
 };
