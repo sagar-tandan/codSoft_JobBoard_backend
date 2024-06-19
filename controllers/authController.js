@@ -383,7 +383,7 @@ const submitApplication = async (req, res) => {
     }
 
     // Now for the job vacancy Array
-    const findJobVacancy = await JObModel.findOne({Job_id: jid})
+    const findJobVacancy = await JObModel.findOne({ Job_id: jid });
 
     const newApplication = {
       name: name,
@@ -405,10 +405,6 @@ const submitApplication = async (req, res) => {
     findJobVacancy.Application.push(newApplication);
     const final1 = await findJobVacancy.save();
 
-
-    // const newJobId = final.job[final.job.length - 1]._id;
-    // newJob.Job_id = newJobId;
-    // const jobvacancy = await JObModel.create(newJob);
     console.log(final);
 
     return res.json({ message: "Application Posted Successfully!" });
