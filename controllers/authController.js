@@ -306,6 +306,29 @@ const getCompanyJobs = async (req, res) => {
   }
 };
 
+// const getCompanyAllApplications = async (req,res)=>{
+
+//   try {
+//     const { id } = req.query;
+//     const findCompanyById = await Company.findOne({ "company._id": id });
+//     if (!findCompanyById) {
+//       res.json({ error: "No Company Found!!" });
+//     }
+//     const findAllJobs = findCompanyById.job;
+//     if (!findAllJobs) {
+//       res.json({ error: "No Jobs Found!!" });
+//     }
+//     return res.json({ findAllJobs });
+//   } catch (error) {
+//     console.log(error);
+//   }
+
+// }
+
+// const getCompanyJobApplication = (req,res)=>{
+
+// }
+
 const deleteJob = async (req, res) => {
   try {
     const { cid, jid } = req.body;
