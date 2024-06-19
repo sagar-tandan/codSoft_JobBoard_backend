@@ -363,6 +363,8 @@ const submitApplication = async (req, res) => {
       experience,
       cover,
     } = req.body;
+
+    // Finding company and desireed job
     const findDesiredCompany = await Company.findOne({
       "company._id": id,
       "job._id": jid,
@@ -380,6 +382,9 @@ const submitApplication = async (req, res) => {
       return res.json({ error: "Job not Found!" });
     }
 
+    // Now for the job vacancy Array
+    const findJobVacancy = await JObModel.findOne({Job_id: jid})
+
     const newApplication = {
       name: name,
       email: email,
@@ -396,6 +401,11 @@ const submitApplication = async (req, res) => {
 
     findDesiredCompany.job[jobIndex].Applications.push(newApplication);
     const final = await findDesiredCompany.save();
+
+    findJobVacancy.Application.push(newApplication);
+    const final1 = await findJobVacancy.save();
+
+
     // const newJobId = final.job[final.job.length - 1]._id;
     // newJob.Job_id = newJobId;
     // const jobvacancy = await JObModel.create(newJob);
