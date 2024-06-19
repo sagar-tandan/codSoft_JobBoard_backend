@@ -277,6 +277,8 @@ const uploadJob = async (req, res) => {
 
     findDesiredCompany.job.push(newJob);
     const final = await findDesiredCompany.save();
+    const newJobId = final.job[final.job.length - 1]._id;
+    newJob.Job_id = newJobId;
     const jobvacancy = await JObModel.create(newJob);
 
     return res.json({ message: "Job Posted Successfully!" });
@@ -318,6 +320,12 @@ const deleteJob = async (req, res) => {
         .status(404)
         .json({ error: "Job not found in the specified company." });
     }
+
+    const jobToDeleteFromJobs = await JObModel.findOneAndDelete({
+      Job_id: jid,
+    });
+
+    console.log(jobToDeleteFromJobs);
 
     res.status(200).json({ message: "Job deleted successfully.", jobToDelete });
   } catch (error) {

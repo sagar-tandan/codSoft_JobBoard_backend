@@ -22,6 +22,7 @@ const jobSchema = new Schema({
   Level: String,
   PublishedDate : String,
   ExpiryDate: String,
+  Job_id: String,
 });
 
 const JObModel = mongoose.model("JobVacancy", jobSchema);
