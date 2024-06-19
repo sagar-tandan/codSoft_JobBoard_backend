@@ -2,6 +2,7 @@
 const Candidate = require("../models/candidate");
 const Company = require("../models/company");
 const JObModel = require("../models/jobModel");
+const ApplicationModel = require("../models/Application");
 const jwt = require("jsonwebtoken");
 // import {hashPassword, comparePassword} from '../helpers/auth'
 const { hashPassword, comparePassword } = require("../helpers/auth");
@@ -344,6 +345,69 @@ const getAllJobs = async (req, res) => {
     console.log(error);
   }
 };
+
+const submitApplication = async (req, res) => {
+  try {
+    const {
+      id,
+      jid,
+      name,
+      email,
+      phone,
+      location,
+      // resume: "",
+      fb,
+      linkedin,
+      github,
+      portfolio,
+      experience,
+      cover,
+    } = req.body;
+    const findDesiredCompany = await Company.findOne({
+      "company._id": id,
+      "job._id": jid,
+    });
+
+    if (!findDesiredCompany) {
+      return res.status(404).json({ error: "Company not found" });
+    }
+
+    const jobIndex = findDesiredCompany.job.findIndex(
+      (job) => job._id.toString() === jid
+    );
+
+    if (jobIndex === -1) {
+      return res.json({ error: "Job not Found!" });
+    }
+
+    const newApplication = {
+      name: name,
+      email: email,
+      phone: phone,
+      location: location,
+      // resume: "",
+      fb: fb,
+      linkedin: linkedin,
+      github: github,
+      portfolio: portfolio,
+      experience: experience,
+      cover: cover,
+    };
+
+    findDesiredCompany.job[jobIndex].Applications.push(newApplication);
+    const final = await findDesiredCompany.save();
+    // const newJobId = final.job[final.job.length - 1]._id;
+    // newJob.Job_id = newJobId;
+    // const jobvacancy = await JObModel.create(newJob);
+    console.log(final);
+
+    return res.json({ message: "Application Posted Successfully!" });
+    // console.log("done")
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   test,
   registerUser,
@@ -354,4 +418,5 @@ module.exports = {
   getCompanyJobs,
   deleteJob,
   getAllJobs,
+  submitApplication,
 };

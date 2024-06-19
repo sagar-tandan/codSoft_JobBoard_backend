@@ -15,6 +15,20 @@ const companySchema = new Schema({
   type: String,
 });
 
+const userApplication = new Schema({
+  name: String,
+  email: String,
+  phone: Number,
+  location: String,
+  // resume: "",
+  fb: String,
+  linkedin: String,
+  github: String,
+  portfolio: String,
+  experience: String,
+  cover: String,
+});
+
 const job = new Schema({
   CompanyName: String,
   CompanyLocation: String,
@@ -32,12 +46,14 @@ const job = new Schema({
   Gender: String,
   Qualification: String,
   Level: String,
+  Applications: [userApplication],
 });
 
 // Define User schema
 const userCompanySchema = new Schema({
   company: companySchema,
   job: [job],
+  // applications: [userApplication],
 });
 
 const UserCompanyModel = mongoose.model("Company", userCompanySchema);
