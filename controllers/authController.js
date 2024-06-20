@@ -377,76 +377,71 @@ const getAllJobs = async (req, res) => {
 const submitApplication = async (req, res) => {
   try {
     const {
-      // id,
-      // jid,
       Cname,
       email,
-      // phone,
-      // location,
-      // lastModified,
-      // lastModifiedDate,
-      // name,
-      // size,
-      // type,
-      // webkitRelativePath,
-      // fb,
-      // linkedin,
-      // github,
-      // portfolio,
-      // experience,
-      // cover,
+      phone,
+      location,
+      downloadURL,
+      fb,
+      linkedin,
+      github,
+      portfolio,
+      experience,
+      cover,
+      jobid,
     } = req.body;
 
-    // console.log(req.body);
-    // const file = req.file;
+    // console.log(jobid);
+    // Now for the job vacancy Array
+    const findJobVacancy = await JObModel.findOne({ _id: jobid });
+    // console.log(findJobVacancy.CompanyName);
 
-    // console.log('File:', file);
+    // Finding company and desireed job
+    const findDesiredCompany = await Company.findOne({
+      "company.name": findJobVacancy.CompanyName,
+      "job._id": findJobVacancy.Job_id,
+    });
 
-    //   // Finding company and desireed job
-    //   const findDesiredCompany = await Company.findOne({
-    //     "company._id": id,
-    //     "job._id": jid,
-    //   });
+    console.log(findDesiredCompany)
 
-    //   if (!findDesiredCompany) {
-    //     return res.status(404).json({ error: "Company not found" });
-    //   }
+    if (!findDesiredCompany) {
+      return res.status(404).json({ error: "Company not found" });
+    }
 
-    //   const jobIndex = findDesiredCompany.job.findIndex(
-    //     (job) => job._id.toString() === jid
-    //   );
+    const jobIndex = findDesiredCompany.job.findIndex(
+      (job) => job._id.toString() === findJobVacancy.Job_id
+    );
 
-    //   if (jobIndex === -1) {
-    //     return res.json({ error: "Job not Found!" });
-    //   }
+    if (jobIndex === -1) {
+      return res.json({ error: "Job not Found!" });
+    }
 
-    //   // Now for the job vacancy Array
-    //   const findJobVacancy = await JObModel.findOne({ Job_id: jid });
+    // console.log(jobIndex);
 
-    //   const newApplication = {
-    //     name: name,
-    //     email: email,
-    //     phone: phone,
-    //     location: location,
-    //     resume: reader,
-    //     fb: fb,
-    //     linkedin: linkedin,
-    //     github: github,
-    //     portfolio: portfolio,
-    //     experience: experience,
-    //     cover: cover,
-    //   };
+    const newApplication = {
+      name: Cname,
+      email: email,
+      phone: phone,
+      location: location,
+      resume: downloadURL,
+      fb: fb,
+      linkedin: linkedin,
+      github: github,
+      portfolio: portfolio,
+      experience: experience,
+      cover: cover,
+    };
 
-    //   findDesiredCompany.job[jobIndex].Applications.push(newApplication);
-    //   const final = await findDesiredCompany.save();
+    findDesiredCompany.job[jobIndex].Applications.push(newApplication);
+    const final = await findDesiredCompany.save();
 
-    //   findJobVacancy.Application.push(newApplication);
-    //   const final1 = await findJobVacancy.save();
+    findJobVacancy.Application.push(newApplication);
+    const final1 = await findJobVacancy.save();
 
-    //   console.log(final);
+    // console.log(findJobVacancy);
+    // console.log("Finally!")
 
-    //   return res.json({ message: "Application Posted Successfully!" });
-    //   // console.log("done")
+    return res.json({ message: "Application Posted Successfully!" });
   } catch (error) {
     console.log(error);
   }
