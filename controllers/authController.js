@@ -377,22 +377,30 @@ const getAllJobs = async (req, res) => {
 const submitApplication = async (req, res) => {
   try {
     const {
-      id,
-      jid,
-      name,
+      // id,
+      // jid,
+      Cname,
       email,
-      phone,
-      location,
-      resume,
-      fb,
-      linkedin,
-      github,
-      portfolio,
-      experience,
-      cover,
+      // phone,
+      // location,
+      // lastModified,
+      // lastModifiedDate,
+      // name,
+      // size,
+      // type,
+      // webkitRelativePath,
+      // fb,
+      // linkedin,
+      // github,
+      // portfolio,
+      // experience,
+      // cover,
     } = req.body;
 
-    console.log(req.body);
+    // console.log(req.body);
+    // const file = req.file;
+
+    // console.log('File:', file);
 
     //   // Finding company and desireed job
     //   const findDesiredCompany = await Company.findOne({
