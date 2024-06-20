@@ -20,7 +20,7 @@ const userApplication = new Schema({
   email: String,
   phone: Number,
   location: String,
-  // resume: "",
+  resume: Array,
   fb: String,
   linkedin: String,
   github: String,
