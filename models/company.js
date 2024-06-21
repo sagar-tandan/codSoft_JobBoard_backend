@@ -20,6 +20,7 @@ const userApplication = new Schema({
   email: String,
   phone: Number,
   location: String,
+  jobname: String,
   resume: String,
   fb: String,
   linkedin: String,
