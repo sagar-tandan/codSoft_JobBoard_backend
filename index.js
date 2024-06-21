@@ -4,13 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
-// // for storing files
-// const multer = require("multer");
-// const bodyParser = require("body-parser");
-// const path = require("path");
-
 const app = express();
-// app.use(bodyParser.json());
 const router = require("./routes/authRoutes");
 
 mongoose
