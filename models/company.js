@@ -47,6 +47,8 @@ const job = new Schema({
   Gender: String,
   Qualification: String,
   Level: String,
+  PublishedDate: String,
+  ExpiryDate: String,
   Applications: [userApplication],
 });
 
