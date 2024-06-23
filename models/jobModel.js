@@ -7,6 +7,7 @@ const userApplication = new Schema({
   phone: Number,
   location: String,
   jobname: String,
+  Userimage: String,
   resume: String,
   fb: String,
   linkedin: String,

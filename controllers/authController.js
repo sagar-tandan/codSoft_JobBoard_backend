@@ -2,7 +2,7 @@
 const Candidate = require("../models/candidate");
 const Company = require("../models/company");
 const JObModel = require("../models/jobModel");
-const ApplicationModel = require("../models/Application");
+// const ApplicationModel = require("../models/Application");
 const jwt = require("jsonwebtoken");
 
 // for storing files
@@ -383,6 +383,7 @@ const submitApplication = async (req, res) => {
       phone,
       location,
       jobname,
+      Userimage,
       downloadURL,
       fb,
       linkedin,
@@ -426,6 +427,7 @@ const submitApplication = async (req, res) => {
       phone: phone,
       location: location,
       jobname: jobname,
+      Userimage: Userimage,
       resume: downloadURL,
       fb: fb,
       linkedin: linkedin,
