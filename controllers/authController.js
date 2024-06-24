@@ -435,6 +435,7 @@ const submitApplication = async (req, res) => {
       portfolio: portfolio,
       experience: experience,
       cover: cover,
+      status: "pending",
     };
 
     findDesiredCompany.job[jobIndex].Applications.push(newApplication);
@@ -451,74 +452,6 @@ const submitApplication = async (req, res) => {
     console.log(error);
   }
 };
-
-// // Updated submitApplication function
-// const submitApplication = async (req, res) => {
-//   try {
-//     const {
-//       id,
-//       jid,
-//       name,
-//       email,
-//       phone,
-//       location,
-//       fb,
-//       linkedin,
-//       github,
-//       portfolio,
-//       experience,
-//       cover,
-//     } = req.body;
-
-//     const resume = req.file ? req.file.path : '';
-
-//     // Finding company and desired job
-//     const findDesiredCompany = await Company.findOne({
-//       "company._id": id,
-//       "job._id": jid,
-//     });
-
-//     if (!findDesiredCompany) {
-//       return res.status(404).json({ error: "Company not found" });
-//     }
-
-//     const jobIndex = findDesiredCompany.job.findIndex(
-//       (job) => job._id.toString() === jid
-//     );
-
-//     if (jobIndex === -1) {
-//       return res.status(404).json({ error: "Job not found" });
-//     }
-
-//     // Now for the job vacancy Array
-//     const findJobVacancy = await JObModel.findOne({ Job_id: jid });
-
-//     const newApplication = {
-//       name,
-//       email,
-//       phone,
-//       location,
-//       resume,
-//       fb,
-//       linkedin,
-//       github,
-//       portfolio,
-//       experience,
-//       cover,
-//     };
-
-//     findDesiredCompany.job[jobIndex].Applications.push(newApplication);
-//     await findDesiredCompany.save();
-
-//     findJobVacancy.Application.push(newApplication);
-//     await findJobVacancy.save();
-
-//     return res.json({ message: "Application posted successfully!" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: "An error occurred while submitting the application" });
-//   }
-// };
 
 module.exports = {
   test,

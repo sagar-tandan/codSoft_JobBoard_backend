@@ -29,6 +29,7 @@ const userApplication = new Schema({
   portfolio: String,
   experience: String,
   cover: String,
+  status: String,
 });
 
 const job = new Schema({
