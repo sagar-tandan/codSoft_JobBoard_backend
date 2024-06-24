@@ -18,6 +18,7 @@ const {
   deleteJob,
   getAllJobs,
   submitApplication,
+  changeStatus,
 } = require("../controllers/authController");
 
 //middleWare
@@ -49,7 +50,7 @@ router.post("/uploadjob", uploadJob);
 router.get("/getCompanyJobs", getCompanyJobs);
 router.delete("/deleteJobs", deleteJob);
 router.get("/getAllJobs", getAllJobs);
-router.post('/submitApplication', submitApplication)
-// router.post("/submitApplication", upload.single("resume"), submitApplication);
+router.post("/submitApplication", submitApplication);
+router.post("/changeStatus", changeStatus);
 
 module.exports = router;

@@ -394,7 +394,6 @@ const submitApplication = async (req, res) => {
       jobid,
     } = req.body;
 
-    // console.log(jobid);
     // Now for the job vacancy Array
     const findJobVacancy = await JObModel.findOne({ _id: jobid });
     // console.log(findJobVacancy.CompanyName);
@@ -453,6 +452,39 @@ const submitApplication = async (req, res) => {
   }
 };
 
+const changeStatus = async (req, res) => {
+  const { jobId, appId, status } = req.body;
+  // Now for the job vacancy Array
+  // const findJobVacancy = await JObModel.findOne({Job_id: jobId });
+  // console.log(findJobVacancy.Application);
+
+  // const result = await JObModel.updateOne(
+  //   { Job_id: jobId, "Application._id": appId },
+  //   { $set: { "Application.$.status": status } }
+  // );
+
+
+  // // Finding company and desireed job
+  // const findDesiredCompany = await Company.findOne({
+  //   "company.name": findJobVacancy.CompanyName,
+  //   "job._id": findJobVacancy.Job_id,
+  // });
+
+  // console.log(findDesiredCompany);
+
+  // if (!findDesiredCompany) {
+  //   return res.status(404).json({ error: "Company not found" });
+  // }
+
+  // const jobIndex = findDesiredCompany.job.findIndex(
+  //   (job) => job._id.toString() === findJobVacancy.Job_id
+  // );
+
+  // if (jobIndex === -1) {
+  //   return res.json({ error: "Job not Found!" });
+  // }
+};
+
 module.exports = {
   test,
   registerUser,
@@ -464,4 +496,5 @@ module.exports = {
   deleteJob,
   getAllJobs,
   submitApplication,
+  changeStatus,
 };
