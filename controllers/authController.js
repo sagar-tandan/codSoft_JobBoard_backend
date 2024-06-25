@@ -453,7 +453,19 @@ const submitApplication = async (req, res) => {
 };
 
 const changeStatus = async (req, res) => {
-  const { jobId, appId, status } = req.body;
+  const { appId } = req.body;
+
+  // Find the company document containing the application
+  const company = await Company.findOne({
+    'job.Applications._id': appId,
+  });
+
+  if (!company) {
+    return res.json({message : "No Company Found!"});  }
+
+  return res.json({company});
+
+
   // Now for the job vacancy Array
   // const findJobVacancy = await JObModel.findOne({Job_id: jobId });
   // console.log(findJobVacancy.Application);
