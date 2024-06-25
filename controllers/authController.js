@@ -453,48 +453,40 @@ const submitApplication = async (req, res) => {
 };
 
 const changeStatus = async (req, res) => {
-  const { appId } = req.body;
+  const { appId, newStatus } = req.body;
+  try {
+    // Find the company document containing the application
+    const company = await Company.findOne({
+      "job.Applications._id": appId,
+    });
 
-  // Find the company document containing the application
-  const company = await Company.findOne({
-    'job.Applications._id': appId,
-  });
+    if (!company) {
+      return res.json({ message: "No Company Found!" });
+    }
 
-  if (!company) {
-    return res.json({message : "No Company Found!"});  }
+    // Find the job that contains the application
+    let foundApplication = null;
+    for (const job of company.job) {
+      const application = job.Applications.id(appId);
+      console.log(application);
+      if (application) {
+        foundApplication = application;
+        application.status = newStatus;
+        break;
+      }
+    }
 
-  return res.json({company});
+    if (!foundApplication) {
+      return res.json({ message: "Application not found in any job" });
+    }
 
+    // Save the updated company document
+    await company.save();
 
-  // Now for the job vacancy Array
-  // const findJobVacancy = await JObModel.findOne({Job_id: jobId });
-  // console.log(findJobVacancy.Application);
-
-  // const result = await JObModel.updateOne(
-  //   { Job_id: jobId, "Application._id": appId },
-  //   { $set: { "Application.$.status": status } }
-  // );
-
-
-  // // Finding company and desireed job
-  // const findDesiredCompany = await Company.findOne({
-  //   "company.name": findJobVacancy.CompanyName,
-  //   "job._id": findJobVacancy.Job_id,
-  // });
-
-  // console.log(findDesiredCompany);
-
-  // if (!findDesiredCompany) {
-  //   return res.status(404).json({ error: "Company not found" });
-  // }
-
-  // const jobIndex = findDesiredCompany.job.findIndex(
-  //   (job) => job._id.toString() === findJobVacancy.Job_id
-  // );
-
-  // if (jobIndex === -1) {
-  //   return res.json({ error: "Job not Found!" });
-  // }
+    return res.json({ message: `Application is ${newStatus}!` });
+  } catch (error) {
+    return res.json({ message: "Something went wrong" });
+  }
 };
 
 module.exports = {
