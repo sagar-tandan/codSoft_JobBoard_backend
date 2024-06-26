@@ -459,7 +459,7 @@ const changeStatus = async (req, res) => {
     // Save the updated company document
     await company.save();
 
-    res.json({ company });
+    // res.json({ company });
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
