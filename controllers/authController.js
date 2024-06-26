@@ -5,12 +5,11 @@ const JObModel = require("../models/jobModel");
 // const ApplicationModel = require("../models/Application");
 const jwt = require("jsonwebtoken");
 
-// for storing files
-const multer = require("multer");
-const bodyParser = require("body-parser");
-const path = require("path");
 // import {hashPassword, comparePassword} from '../helpers/auth'
 const { hashPassword, comparePassword } = require("../helpers/auth");
+
+//Nodemailer
+const nodemailer = require("nodemailer");
 
 const test = (req, res) => {
   res.json("text is working");
@@ -453,7 +452,7 @@ const submitApplication = async (req, res) => {
 };
 
 const changeStatus = async (req, res) => {
-  const { appId, newStatus } = req.body;
+  const { appId, newStatus, email } = req.body;
   try {
     // Find the company document containing the application
     const company = await Company.findOne({
@@ -482,6 +481,44 @@ const changeStatus = async (req, res) => {
 
     // Save the updated company document
     await company.save();
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false, // Use `true` for port 465, `false` for all other ports
+      auth: {
+        user: "thur.thunder.3@gmail.com",
+        pass: "sddc adtf spjp elax",
+      },
+    });
+
+    console.log("done upto here");
+
+    const mailOptions = {
+      from: "thur.thunder.3@gmail.com",
+      to: email,
+      subject: "Subject",
+      message: "trial",
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent Successfully!");
+      }
+    });
+
+    // // send mail with defined transport object
+    // const info = await transporter.sendMail({
+    //   from: "thur.thunder.3@gmail.com", // sender address
+    //   to: "corotin174@nolanzip.com", // list of receivers
+    //   subject: "Regarding Application Status", // Subject line
+    //   text: "Hello sir/mam, your application has been accepted ", // plain text body
+    //   // html: "<b>Hello world?</b>", // html body
+    // });
+
+    // console.log(info);
 
     return res.json({ message: `Application is ${newStatus}!` });
   } catch (error) {
