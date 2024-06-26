@@ -483,12 +483,12 @@ const changeStatus = async (req, res) => {
     await company.save();
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
+      host: "smtp.gmail.com",
       port: 587,
       secure: false, // Use `true` for port 465, `false` for all other ports
       auth: {
         user: "thur.thunder.3@gmail.com",
-        pass: "sddc adtf spjp elax",
+        pass: "pqut rjcg atxf yfpy",
       },
     });
 
@@ -498,8 +498,8 @@ const changeStatus = async (req, res) => {
       from: "thur.thunder.3@gmail.com",
       to: email,
       subject: "Subject",
-      message: "trial",
-    };
+      html: "<p>Hello sir/mam,<p> your application has been accepted ",
+  };
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -514,7 +514,6 @@ const changeStatus = async (req, res) => {
     //   from: "thur.thunder.3@gmail.com", // sender address
     //   to: "corotin174@nolanzip.com", // list of receivers
     //   subject: "Regarding Application Status", // Subject line
-    //   text: "Hello sir/mam, your application has been accepted ", // plain text body
     //   // html: "<b>Hello world?</b>", // html body
     // });
 
