@@ -421,6 +421,31 @@ const submitApplication = async (req, res) => {
 
     // console.log(findJobVacancy);
     // console.log("Finally!")
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // Use `true` for port 465, `false` for all other ports
+      auth: {
+        user: "thur.thunder.3@gmail.com",
+        pass: process.env.PASS,
+      },
+    });
+
+    // console.log("done upto here");
+
+    const mailOptions = {
+      from: "thur.thunder.3@gmail.com",
+      to: email,
+      subject: `Application for ${jobname} `,
+      html: `<p> Dear ${Cname},<p>Thank you for your interest! We wanted to let you know that your application for Front-End Software Engineer is sent to desired company.</p> <p>The company will review your application and will be in touch if your qualifications matches their needs for the role.</p> <br> <p>Best Regards,</p> <p>JobBoard</p>`,
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return res.json("Something went wrong!");
+      } else {
+        return res.json("Email sent Successfully!");
+      }
+    });
 
     return res.json({ message: "Application Posted Successfully!" });
   } catch (error) {
@@ -481,11 +506,11 @@ const changeStatus = async (req, res) => {
         foundApplication.name
       },<p> I hope this message finds you well. I am writing to you on behalf of ${name} regarding your recent application for the ${
         foundApplication.jobname
-      } submitted through JobBoard.</p> <br> <p>${
+      } submitted through JobBoard.</p> <p>${
         newStatus === "accepted"
           ? "We are pleased to inform you that your application has been successful. Your skills and experiences align well with what we are looking for in a candidate. We believe you would be a valuable addition to our team."
           : "After careful consideration, we regret to inform you that we have decided not to move forward with your application at this time. The decision was not easy due to the high quality of applications we received for this position."
-      }</p> <br> <p>Please remember that this does not reflect on your abilities or qualifications. We encourage you to apply for any future positions at ${name} that you feel you are qualified for.</p> <br> <p>Thank you for your interest in ${name} and for taking the time to apply through JobBoard. We appreciate your patience throughout the application process.</p> <br> <p>Best Regards,</p> <p>${name}</p><p>${email}</p> `,
+      }</p> <p>Please remember that this does not reflect on your abilities or qualifications. We encourage you to apply for any future positions at ${name} that you feel you are qualified for.</p> <br> <p>Thank you for your interest in ${name} and for taking the time to apply through JobBoard. We appreciate your patience throughout the application process.</p> <br> <p>Best Regards,</p> <p>${name}</p><p>${email}</p> `,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
