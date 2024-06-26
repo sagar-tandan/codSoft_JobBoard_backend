@@ -492,7 +492,7 @@ const changeStatus = async (req, res) => {
       secure: false, // Use `true` for port 465, `false` for all other ports
       auth: {
         user: "thur.thunder.3@gmail.com",
-        pass: "pqut rjcg atxf yfpy",
+        pass: process.env.PASS,
       },
     });
 
