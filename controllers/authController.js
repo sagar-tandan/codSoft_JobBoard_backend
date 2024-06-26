@@ -477,7 +477,9 @@ const changeStatus = async (req, res) => {
       subject: `Application Status for ${foundApplication.jobname} at ${cName} from JobBoard`,
       html: `<p> Dear ${
         foundApplication.name
-      },<p> I hope this message finds you well. I am writing to you on behalf of ${cName} regarding your recent application for the ${foundApplication.jobname} submitted through JobBoard.</p> <br> <p>${
+      },<p> I hope this message finds you well. I am writing to you on behalf of ${cName} regarding your recent application for the ${
+        foundApplication.jobname
+      } submitted through JobBoard.</p> <br> <p>${
         newStatus === "accepted"
           ? "We are pleased to inform you that your application has been successful. Your skills and experiences align well with what we are looking for in a candidate. We believe you would be a valuable addition to our team."
           : "After careful consideration, we regret to inform you that we have decided not to move forward with your application at this time. The decision was not easy due to the high quality of applications we received for this position."
@@ -486,14 +488,14 @@ const changeStatus = async (req, res) => {
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-        console.log(error);
+        return res.json("Something went wrong!");
       } else {
-        console.log("Email sent Successfully!");
+        return res.json("Email sent Successfully!");
       }
     });
 
     // return res.json({ message: `Application is ${newStatus}!` });
-    return res.json({ company });
+    // return res.json({ company });
   } catch (error) {
     return res.json({ message: "Something went wrong" });
   }
