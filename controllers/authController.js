@@ -483,6 +483,7 @@ const changeStatus = async (req, res) => {
 
     // Save the updated company document
     await company.save();
+    console.log(foundApplication);
 
     // res.json({ company });
 
@@ -517,7 +518,10 @@ const changeStatus = async (req, res) => {
       if (error) {
         return res.json("Something went wrong!");
       } else {
-        return res.json("Email sent Successfully!");
+        return res.json({
+          message: "Email sent Successfully!",
+          foundApplication: foundApplication,
+        });
       }
     });
 
