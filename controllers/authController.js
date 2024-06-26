@@ -311,29 +311,6 @@ const getCompanyJobs = async (req, res) => {
   }
 };
 
-// const getCompanyAllApplications = async (req,res)=>{
-
-//   try {
-//     const { id } = req.query;
-//     const findCompanyById = await Company.findOne({ "company._id": id });
-//     if (!findCompanyById) {
-//       res.json({ error: "No Company Found!!" });
-//     }
-//     const findAllJobs = findCompanyById.job;
-//     if (!findAllJobs) {
-//       res.json({ error: "No Jobs Found!!" });
-//     }
-//     return res.json({ findAllJobs });
-//   } catch (error) {
-//     console.log(error);
-//   }
-
-// }
-
-// const getCompanyJobApplication = (req,res)=>{
-
-// }
-
 const deleteJob = async (req, res) => {
   try {
     const { cid, jid } = req.body;
@@ -452,7 +429,7 @@ const submitApplication = async (req, res) => {
 };
 
 const changeStatus = async (req, res) => {
-  const { appId, newStatus, email } = req.body;
+  const { cName, cEmail, appId, newStatus, email } = req.body;
   try {
     // Find the company document containing the application
     const company = await Company.findOne({
@@ -492,14 +469,20 @@ const changeStatus = async (req, res) => {
       },
     });
 
-    console.log("done upto here");
+    // console.log("done upto here");
 
     const mailOptions = {
       from: "thur.thunder.3@gmail.com",
       to: email,
-      subject: "Subject",
-      html: "<p>Hello sir/mam,<p> your application has been accepted ",
-  };
+      subject: `Application Status for ${foundApplication.jobname} at ${cName} from JobBoard`,
+      html: `<p> Dear ${
+        foundApplication.name
+      },<p> I hope this message finds you well. I am writing to you on behalf of ${cName} regarding your recent application for the ${foundApplication.jobname} submitted through JobBoard.</p> <br> <p>${
+        newStatus === "accepted"
+          ? "We are pleased to inform you that your application has been successful. Your skills and experiences align well with what we are looking for in a candidate. We believe you would be a valuable addition to our team."
+          : "After careful consideration, we regret to inform you that we have decided not to move forward with your application at this time. The decision was not easy due to the high quality of applications we received for this position."
+      }</p> <br> <p>Please remember that this does not reflect on your abilities or qualifications. We encourage you to apply for any future positions at ${cName} that you feel you are qualified for.</p> <br> <p>Thank you for your interest in ${cName} and for taking the time to apply through JobBoard. We appreciate your patience throughout the application process.</p> <br> <p>Best Regards,</p> <p>${cName}</p><p>${cEmail}</p> `,
+    };
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
@@ -509,17 +492,8 @@ const changeStatus = async (req, res) => {
       }
     });
 
-    // // send mail with defined transport object
-    // const info = await transporter.sendMail({
-    //   from: "thur.thunder.3@gmail.com", // sender address
-    //   to: "corotin174@nolanzip.com", // list of receivers
-    //   subject: "Regarding Application Status", // Subject line
-    //   // html: "<b>Hello world?</b>", // html body
-    // });
-
-    // console.log(info);
-
-    return res.json({ message: `Application is ${newStatus}!` });
+    // return res.json({ message: `Application is ${newStatus}!` });
+    return res.json({ company });
   } catch (error) {
     return res.json({ message: "Something went wrong" });
   }
