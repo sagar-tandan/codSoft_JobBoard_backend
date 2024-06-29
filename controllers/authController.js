@@ -354,12 +354,20 @@ const getAllJobs = async (req, res) => {
 const getSearchedJobs = async (req, res) => {
   try {
     const { query } = req.body;
-    // const findJobs = await JObModel.find({ Position: { $regex: query, $options: 'i' } },);
-    // if (!findJobs) {
-    //   res.json({ error: "No jobs Found!!" });
-    // }
-    // return res.json({ findJobs });
-    console.log(query);
+    const findJobs = await JObModel.find({
+      $or: [
+        { Position: { $regex: query, $options: "i" } }, // Searching by job title (case-insensitive)
+        { Desc: { $regex: query, $options: "i" } }, // Searching by job description (case-insensitive)
+        { Category: { $regex: query, $options: "i" } },
+        { Skills: { $regex: query, $options: "i" } },
+        { CompanyName: { $regex: query, $options: "i" } },
+      ],
+    });
+    if (findJobs.length === 0) {
+      res.json({ message: "No jobs Found!!" });
+    }
+    return res.json({ findJobs });
+    // console.log(query);
   } catch (error) {
     console.log(error);
   }
