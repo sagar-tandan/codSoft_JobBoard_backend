@@ -353,7 +353,7 @@ const getAllJobs = async (req, res) => {
 
 const getSearchedJobs = async (req, res) => {
   try {
-    const { query } = req.body;
+    const { query } = req.query;
     const findJobs = await JObModel.find({
       $or: [
         { Position: { $regex: query, $options: "i" } }, // Searching by job title (case-insensitive)
@@ -362,6 +362,7 @@ const getSearchedJobs = async (req, res) => {
         { Skills: { $regex: query, $options: "i" } },
         { CompanyName: { $regex: query, $options: "i" } },
       ],
+
     });
     if (findJobs.length === 0) {
       res.json({ message: "No jobs Found!!" });
