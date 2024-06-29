@@ -354,11 +354,12 @@ const getAllJobs = async (req, res) => {
 const getSearchedJobs = async (req, res) => {
   try {
     const { query } = req.body;
-    const findJobs = await JObModel.find();
-    if (!findJobs) {
-      res.json({ error: "No jobs Found!!" });
-    }
-    return res.json({ findJobs });
+    // const findJobs = await JObModel.find({ Position: { $regex: query, $options: 'i' } },);
+    // if (!findJobs) {
+    //   res.json({ error: "No jobs Found!!" });
+    // }
+    // return res.json({ findJobs });
+    console.log(query);
   } catch (error) {
     console.log(error);
   }

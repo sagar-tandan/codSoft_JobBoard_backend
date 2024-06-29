@@ -53,6 +53,6 @@ router.delete("/deleteJobs", deleteJob);
 router.get("/getAllJobs", getAllJobs);
 router.post("/submitApplication", submitApplication);
 router.post("/changeStatus", changeStatus);
-router.post("/getSearchedJobs", getSearchedJobs);
+router.get("/getSearchedJobs", getSearchedJobs);
 
 module.exports = router;
