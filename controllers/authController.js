@@ -351,6 +351,19 @@ const getAllJobs = async (req, res) => {
   }
 };
 
+const getSearchedJobs = async (req, res) => {
+  try {
+    const { query } = req.body;
+    const findJobs = await JObModel.find();
+    if (!findJobs) {
+      res.json({ error: "No jobs Found!!" });
+    }
+    return res.json({ findJobs });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const submitApplication = async (req, res) => {
   try {
     const {
@@ -544,4 +557,5 @@ module.exports = {
   getAllJobs,
   submitApplication,
   changeStatus,
+  getSearchedJobs,
 };
