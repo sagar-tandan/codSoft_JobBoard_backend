@@ -20,6 +20,7 @@ const {
   submitApplication,
   changeStatus,
   getSearchedJobs,
+  updateCandiadte,
 } = require("../controllers/authController");
 
 //middleWare
@@ -54,5 +55,6 @@ router.get("/getAllJobs", getAllJobs);
 router.post("/submitApplication", submitApplication);
 router.post("/changeStatus", changeStatus);
 router.get("/getSearchedJobs", getSearchedJobs);
+router.post("/updateCandiadte", updateCandiadte);
 
 module.exports = router;

@@ -64,6 +64,27 @@ const registerUser = async (req, res) => {
   }
 };
 
+const updateCandiadte = async (req, res) => {
+  try {
+    const { email, useremail, username, userphone } = req.body;
+
+    const findUser = await Candidate.findOneAndUpdate(
+      { "candidate.Useremail": email },
+      {
+        $set: {
+          "candidate.Useremail": useremail,
+          "candidate.Username": username,
+          "candidate.Userphone": userphone,
+        },
+      },
+      { new: true }
+    );
+    res.json({ message: "User Updated successfully!", findUser });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //registration of Candidate
 const registerUser1 = async (req, res) => {
   try {
@@ -362,7 +383,6 @@ const getSearchedJobs = async (req, res) => {
         { Skills: { $regex: query, $options: "i" } },
         { CompanyName: { $regex: query, $options: "i" } },
       ],
-
     });
     if (findJobs.length === 0) {
       res.json({ message: "No jobs Found!!" });
@@ -403,6 +423,8 @@ const submitApplication = async (req, res) => {
       "job._id": findJobVacancy.Job_id,
     });
 
+    // const finduser = await Candidate.findOne({ "candidate.Useremail": email });
+
     console.log(findDesiredCompany);
 
     if (!findDesiredCompany) {
@@ -441,6 +463,9 @@ const submitApplication = async (req, res) => {
 
     findJobVacancy.Application.push(newApplication);
     const final1 = await findJobVacancy.save();
+
+    // finduser.Applications.push(newApplication);
+    // const final2 = await finduser.save();
 
     // console.log(findJobVacancy);
     // console.log("Finally!")
@@ -568,4 +593,5 @@ module.exports = {
   submitApplication,
   changeStatus,
   getSearchedJobs,
+  updateCandiadte,
 };
