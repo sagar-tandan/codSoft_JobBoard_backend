@@ -580,6 +580,16 @@ const changeStatus = async (req, res) => {
   }
 };
 
+const getAllCompany = async (req, res) => {
+  try {
+    const allCompanies = await Company.find();
+
+    res.json({ allCompanies });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   test,
   registerUser,
@@ -594,4 +604,5 @@ module.exports = {
   changeStatus,
   getSearchedJobs,
   updateCandiadte,
+  getAllCompany,
 };

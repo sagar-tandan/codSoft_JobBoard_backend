@@ -21,14 +21,14 @@ const {
   changeStatus,
   getSearchedJobs,
   updateCandiadte,
+  getAllCompany,
 } = require("../controllers/authController");
 
 //middleWare
 router.use(
   cors({
     credentials: true,
-    origin: "*",
-    methods: ["GET", "POST", "DELETE"],
+    origin: "http://localhost:5173", // Fix: Match the correct protocol and port
   })
 );
 
@@ -57,5 +57,6 @@ router.post("/submitApplication", submitApplication);
 router.post("/changeStatus", changeStatus);
 router.get("/getSearchedJobs", getSearchedJobs);
 router.post("/updateCandiadte", updateCandiadte);
+router.get("/getAllCompany", getAllCompany);
 
 module.exports = router;
