@@ -25,28 +25,28 @@ const {
 } = require("../controllers/authController");
 
 //middleWare
-// router.use(
-//   cors({
-//     credentials: true,
-//     origin: "*", // Fix: Match the correct protocol and port
-//   })
-// );
+router.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:5173", // Fix: Match the correct protocol and port
+  })
+);
 
 
 
-router.get('/', test);
-// router.post("/register", registerUser);
-// router.post("/registerUser", registerUser1);
-// router.post("/login", loginUser, verifyUser);
-// router.post("/", verifyUser);
-// router.post("/uploadjob", uploadJob);
-// router.get("/getCompanyJobs", getCompanyJobs);
-// router.delete("/deleteJobs", deleteJob);
-// router.get("/getAllJobs", getAllJobs);
-// router.post("/submitApplication", submitApplication);
-// router.post("/changeStatus", changeStatus);
-// router.get("/getSearchedJobs", getSearchedJobs);
-// router.post("/updateCandiadte", updateCandiadte);
-// router.get("/getAllCompany", getAllCompany);
+// router.get('/', test);
+router.post("/register", registerUser);
+router.post("/registerUser", registerUser1);
+router.post("/login", loginUser, verifyUser);
+router.post("/", verifyUser);
+router.post("/uploadjob", uploadJob);
+router.get("/getCompanyJobs", getCompanyJobs);
+router.delete("/deleteJobs", deleteJob);
+router.get("/getAllJobs", getAllJobs);
+router.post("/submitApplication", submitApplication);
+router.post("/changeStatus", changeStatus);
+router.get("/getSearchedJobs", getSearchedJobs);
+router.post("/updateCandiadte", updateCandiadte);
+router.get("/getAllCompany", getAllCompany);
 
 module.exports = router;
