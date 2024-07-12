@@ -32,31 +32,21 @@ router.use(
   })
 );
 
-// // Configure Multer for file uploads
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads/");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, Date.now() + path.extname(file.originalname));
-//   },
-// });
 
-// const upload = multer({ storage: storage });
 
-// router.get('/', test);
-router.post("/register", registerUser);
-router.post("/registerUser", registerUser1);
-router.post("/login", loginUser, verifyUser);
-router.post("/", verifyUser);
-router.post("/uploadjob", uploadJob);
-router.get("/getCompanyJobs", getCompanyJobs);
-router.delete("/deleteJobs", deleteJob);
-router.get("/getAllJobs", getAllJobs);
-router.post("/submitApplication", submitApplication);
-router.post("/changeStatus", changeStatus);
-router.get("/getSearchedJobs", getSearchedJobs);
-router.post("/updateCandiadte", updateCandiadte);
-router.get("/getAllCompany", getAllCompany);
+router.get('/', test);
+// router.post("/register", registerUser);
+// router.post("/registerUser", registerUser1);
+// router.post("/login", loginUser, verifyUser);
+// router.post("/", verifyUser);
+// router.post("/uploadjob", uploadJob);
+// router.get("/getCompanyJobs", getCompanyJobs);
+// router.delete("/deleteJobs", deleteJob);
+// router.get("/getAllJobs", getAllJobs);
+// router.post("/submitApplication", submitApplication);
+// router.post("/changeStatus", changeStatus);
+// router.get("/getSearchedJobs", getSearchedJobs);
+// router.post("/updateCandiadte", updateCandiadte);
+// router.get("/getAllCompany", getAllCompany);
 
 module.exports = router;
