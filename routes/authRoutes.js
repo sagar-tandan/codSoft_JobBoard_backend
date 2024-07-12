@@ -28,7 +28,7 @@ const {
 router.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173", // Fix: Match the correct protocol and port
+    origin: "*", // Fix: Match the correct protocol and port
   })
 );
 
