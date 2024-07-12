@@ -25,12 +25,12 @@ const {
 } = require("../controllers/authController");
 
 //middleWare
-router.use(
-  cors({
-    credentials: true,
-    origin: "*", // Fix: Match the correct protocol and port
-  })
-);
+// router.use(
+//   cors({
+//     credentials: true,
+//     origin: "*", // Fix: Match the correct protocol and port
+//   })
+// );
 
 
 
